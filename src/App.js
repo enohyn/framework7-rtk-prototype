@@ -6,9 +6,7 @@ import Product from './components/Product';
 import AccordionProducts from './components/AccordionProducts';
 import { useDispatch } from 'react-redux';
 
-import { fetchAllProducts } from './services/services';
-import { fetchProducts } from './redux/slice/productSlice';
-
+import { fetchAsyncProducts } from './redux/slice/productSlice';
 const routes = [
   {
     path: '/products',
@@ -30,14 +28,10 @@ const f7Params = {
 
 export default () => {
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
-    const fetchData = async () => { 
-      const allProducts = await fetchAllProducts();
-      dispatch(fetchProducts(allProducts))
-    }
-    fetchData();
-  })
+    dispatch(fetchAsyncProducts())
+  }, [dispatch])
   // Main Framework7 App component where we pass Framework7 params
   return (
     <App {...f7Params}>
