@@ -1,4 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchAllProducts } from "../../services/services";
+
+export const fetchAsyncProducts = createAsyncThunk('products/fetchAsyncProducts',
+    async () => {
+        const allProducts = await fetchAllProducts();
+        return allProducts
+    })
 
 const initialState = {
     loading: true,
@@ -12,6 +19,18 @@ const productSlice = createSlice({
         fetchProducts: (state, { payload }) => {
             state.products = payload;
         }
+    },
+    extraReducers: {
+        [fetchAsyncProducts.pending]: () => (
+            console.log()
+        ),
+        [fetchAsyncProducts.fulfilled]: (state, { payload }) => {
+            console.log('fetched Successfully');
+            return { ...state, products: payload }
+        },
+        [fetchAsyncProducts.rejected]: () => {
+            console.log('Rejected');
+        },
     }
 })
 
